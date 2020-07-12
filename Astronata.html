@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Astronauta no Espaço</title>
+    <link rel="shortcut icon" href="austro1.png">
+    <style>
+        canvas {
+            background-image: url(galaxia.jpg);
+            border: 1px solid DarkBlue;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            cursor: pointer;
+            
+        }
+    </style>
+</head>
+<body>
+    <canvas id="jogo" width="570" height="309"></canvas>
+    <script>
+        class Sprite {
+            constructor(x, y, largura, altura, imagem) {
+                this.x = x;
+                this.y = y;
+                this.largura = largura;
+                this.altura = altura;
+                this.imagem = imagem;
+            }
+
+            desenha(ctx) {
+                if (this.imagem) {
+                    ctx.drawImage(this.imagem, this.x, this.y, this.largura, this.altura);
+                } else {
+                    ctx.strokeRect(this.x, this.y, this.largura, this.altura);
+                }
+            }
+        }
+
+        let canvasEl = document.querySelector('#jogo');
+        let ctx = canvasEl.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+
+        let imagemAstro = new Image();
+        imagemAstro.src = 'austro1.png';
+        let astro = new Sprite(50, 50, 128, 128, imagemAstro);
+        let meteoros = [];
+        meteoros.push(new Sprite(430, 190, 25, 25));
+        meteoros.push(new Sprite(220, 180, 25, 25));
+        meteoros.push(new Sprite(340, 120, 25, 25));
+
+        imagemAstro.addEventListener('load', (evento) => {
+            desenhaJogo();
+        });
+        
+        canvasEl.addEventListener('mousemove', (evento) => {
+            astro.x = evento.offsetX - astro.largura/2;
+            astro.y = evento.offsetY - astro.altura/2;
+            desenhaJogo();
+        });
+        
+        function desenhaJogo() {
+            ctx.clearRect(0, 0,570, 309);
+               astro.desenha(ctx);
+
+            for (let meteoro of meteoros) {
+                meteoro.desenha(ctx);
+            }
+
+          
+        }
+    </script>
+           
+
+</body>
+</html>
